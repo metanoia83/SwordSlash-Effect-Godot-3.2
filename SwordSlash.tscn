@@ -1,0 +1,75 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Slash.shader" type="Shader" id=1]
+[ext_resource path="res://slash (26).png" type="Texture" id=2]
+[ext_resource path="res://slash (27).png" type="Texture" id=3]
+
+[sub_resource type="ParticlesMaterial" id=1]
+direction = Vector3( 0, 0, 0 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 1 )
+shader_param/alpha = 1.0
+shader_param/rotation = 3.0
+shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/color = ExtResource( 3 )
+shader_param/mask = ExtResource( 2 )
+
+[sub_resource type="QuadMesh" id=3]
+material = SubResource( 2 )
+size = Vector2( 4, 4 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "Fade"
+length = 0.5
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Slash:draw_pass_1:material:shader_param/alpha")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 1.0, 1.0, 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Slash:draw_pass_1:material:shader_param/rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 3.0, -0.2 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Slash:draw_pass_1:material:shader_param/albedo")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 0.329412, 0.329412, 1 ) ]
+}
+
+[node name="SwordSlash" type="Spatial"]
+
+[node name="Slash" type="Particles" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0 )
+amount = 1
+process_material = SubResource( 1 )
+draw_pass_1 = SubResource( 3 )
+
+[node name="SlashAnim" type="AnimationPlayer" parent="."]
+playback_speed = 3.0
+anims/Fade = SubResource( 4 )
